@@ -1,0 +1,50 @@
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Granbluefantasy_RaidFinder.exe.config
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Granbluefantasy_RaidFinder.exe
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Granbluefantasy_RaidFinder.pdb
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\CoreTweet.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Newtonsoft.Json.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\CoreTweet.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Newtonsoft.Json.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.csprojResolveAssemblyReference.cache
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.Properties.Resources.resources
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.csproj.GenerateResource.Cache
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.exe
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.pdb
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.StartUp.resources
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Core.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Interfaces.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Linq.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.PlatformServices.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Windows.Threading.dll
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Core.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Interfaces.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Linq.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.PlatformServices.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Windows.Threading.xml
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.MainWindow.resources
+D:\Users\Close_the_World\documents\visual studio 2017\Projects\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.Setting.resources
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Granbluefantasy_RaidFinder.exe.config
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.exe
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.pdb
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Granbluefantasy_RaidFinder.exe
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Granbluefantasy_RaidFinder.pdb
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\CoreTweet.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Newtonsoft.Json.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Core.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Interfaces.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Linq.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.PlatformServices.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Windows.Threading.dll
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\CoreTweet.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\Newtonsoft.Json.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Core.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Interfaces.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Linq.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.PlatformServices.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\bin\Debug\System.Reactive.Windows.Threading.xml
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.csprojResolveAssemblyReference.cache
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.MainWindow.resources
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.Properties.Resources.resources
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.Setting.resources
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.StartUp.resources
+E:\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Debug\Granbluefantasy_RaidFinder.csproj.GenerateResource.Cache
