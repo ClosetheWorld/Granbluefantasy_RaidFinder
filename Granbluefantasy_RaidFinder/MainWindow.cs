@@ -80,11 +80,12 @@ namespace Granbluefantasy_RaidFinder
             btn.FillWeight = 20;
             dataGridView1.Columns.Add(btn);
 
-            //Enemys.txtからエネミーリスト生成
-            string enemysource = "Enemys.txt";
-            string sourcelevel, sourcename;
-            System.Text.Encoding enc = System.Text.Encoding.GetEncoding("shift_jis");            
-            enemyfile = System.IO.File.ReadAllLines(enemysource, enc);            
+            //自鯖からエネミーリスト生成
+            string downloadedfile, sourcelevel, sourcename;
+            System.Net.WebClient wc = new System.Net.WebClient();
+            wc.Encoding = System.Text.Encoding.GetEncoding("shift_jis");
+            downloadedfile = wc.DownloadString("http://closetheworld.softether.net:1717/Enemys.txt");
+            enemyfile = downloadedfile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             for(int i = 0; enemyfile.Count() > i; i++)
             {
                 sourcelevel = enemyfile[i].Substring(1, 2);
@@ -232,7 +233,7 @@ namespace Granbluefantasy_RaidFinder
         //バージョン情報
         private void Menubar_Verinfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: 1.2.2.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Version: 1.3.0.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         //このアプリについて
