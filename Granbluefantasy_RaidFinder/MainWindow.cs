@@ -31,7 +31,21 @@ namespace Granbluefantasy_RaidFinder
         //初期化処理
         private void Form1_Load(object sender, EventArgs e)
         {
+            try
+            {
+                session = CoreTweet.OAuth.Authorize(Properties.Settings.Default.APIKey, Properties.Settings.Default.APISecret);
+                tokens = Tokens.Create(Properties.Settings.Default.APIKey, Properties.Settings.Default.APISecret, Properties.Settings.Default.AccessToken, Properties.Settings.Default.AccessTokenSecret);
+                var tes = tokens.Account.VerifyCredentials();
+                MessageBox.Show("起動時初期化完了", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RandomCopy.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Authorize();
+            }
+
             //要見直し
+            /*
             if (Properties.Settings.Default.AccessToken == null || Properties.Settings.Default.AccessTokenSecret == null)
             {
                 Authorize();
@@ -54,6 +68,7 @@ namespace Granbluefantasy_RaidFinder
                     Authorize();
                 }
             }
+            */
 
             //dataGridView1へボタンの配置
             DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
@@ -120,15 +135,6 @@ namespace Granbluefantasy_RaidFinder
             .Cast<StatusMessage>()
             .Select((StatusMessage m) => m.Status.Text)
             .Subscribe(TweetReceive);            
-
-            //前のコード
-            /*
-            tokens.Streaming.FilterAsObservable(track: "ID")
-                .Where((StreamingMessage m) => m.Type == MessageType.Create)
-                .Cast<StatusMessage>()
-                .Select((StatusMessage m) => m.Status.Text)
-                .Subscribe(TweetReceive);                                         
-            */
         }
 
         //再認証
@@ -140,73 +146,70 @@ namespace Granbluefantasy_RaidFinder
         //ツイート受信時に発生するイベント
         public void TweetReceive (string twitext)
         {
-            //エラー含んでそう
-            //string Substring -> StartIndexが負
-            //とりあえずtry-catchでbackgroundworkerが停止しないように
-            try
+            int parsecnt = 0;
+            if (twitext.Contains("参加者募集！参戦ID") == true)
             {
-                int parsecnt = 0;
-                if (twitext.Contains("参加者募集！参戦ID") == true)
+                parsecnt = twitext.IndexOf("参戦ID");
+                id = twitext.Substring(parsecnt + 5, 8);
+                level = twitext.Substring(parsecnt + 16, 2);
+                
+                //正規表現での探索に置き換え検討
+                if (level == "10")
                 {
-                    parsecnt = twitext.IndexOf("参戦ID");
-                    id = twitext.Substring(parsecnt + 5, 8);
-                    level = twitext.Substring(parsecnt + 16, 2);
+                    level = "100";
+                }
+                else if (level == "11")
+                {
+                    level = "110";
+                }
+                else if (level == "12")
+                {
+                    level = "120";
+                }
+                else if (level == "15")
+                {
+                    level = "150";
+                }
 
-                    //正規表現での探索に置き換え検討
-                    if (level == "10")
-                    {
-                        level = "100";
-                    }
-                    else if (level == "11")
-                    {
-                        level = "110";
-                    }
-                    else if (level == "12")
-                    {
-                        level = "120";
-                    }
-                    else if (level == "15")
-                    {
-                        level = "150";
-                    }
-
-                    if (Convert.ToInt32(level) > 99)
-                    {
-                        enemy = twitext.Substring(parsecnt + 20);
-                    }
-                    else
-                    {
-                        enemy = twitext.Substring(parsecnt + 19);
-                    }
-                    parsecnt = enemy.IndexOf("https://");
+                if (Convert.ToInt32(level) > 99)
+                {
+                    enemy = twitext.Substring(parsecnt + 20);
+                }
+                else
+                {
+                    enemy = twitext.Substring(parsecnt + 19);
+                }
+                parsecnt = enemy.IndexOf("https://");
+                try
+                {
                     enemy = enemy.Remove(parsecnt - 1);
+                }
+                catch (Exception exc)
+                {
+                    enemy = enemy.Remove(parsecnt);
+                }
 
-                    Enemy e = new Enemy();
-                    Enemy Tolist = new Enemy();
+                Enemy e = new Enemy();
+                Enemy Tolist = new Enemy();
+                e.Level = level;
+                e.Name = enemy;
+                e.ID = id;
+
+                //チェック入りアイテムの絞り込み処理
+                foreach (int indexchecked in checkedListBox1.CheckedIndices)
+                {
+                    Enemy temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
+                    Tolist = IndexFilter.Filtering(e, temp_e);
+
+                    if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
+                    {
+                        AddList(Tolist);
+                        Ring();
+                    }
                     e.Level = level;
                     e.Name = enemy;
                     e.ID = id;
-
-                    //チェック入りアイテムの絞り込み処理
-                    foreach (int indexchecked in checkedListBox1.CheckedIndices)
-                    {
-                        Enemy temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
-                        Tolist = IndexFilter.Filtering(e, temp_e);
-
-                        if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
-                        {
-                            AddList(Tolist);
-                            Ring();
-                        }
-                        e.Level = level;
-                        e.Name = enemy;
-                        e.ID = id;
-                    }
                 }
-            }
-            catch(Exception ex)
-            {
-                
             }
         }
 
@@ -229,7 +232,7 @@ namespace Granbluefantasy_RaidFinder
         //バージョン情報
         private void Menubar_Verinfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: 1.2.1.5\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Version: 1.2.2.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         //このアプリについて
@@ -277,15 +280,13 @@ namespace Granbluefantasy_RaidFinder
             s.ShowDialog();
         }
 
-        //通知音を鳴らす
-        //鳴らせなかった
-        //とりあえずシステム音鳴らす
-        //鳴らん
-        //鳴った
+        //通知音(システム音)を鳴らす
         private void Ring()
         {
             if (Properties.Settings.Default.RingState == true)
+            {
                 System.Media.SystemSounds.Beep.Play();
+            }
         }
 
         //DataGridViewに追加
