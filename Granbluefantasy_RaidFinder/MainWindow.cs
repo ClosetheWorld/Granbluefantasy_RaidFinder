@@ -24,7 +24,7 @@ namespace Granbluefantasy_RaidFinder
 
         //見ないで        
         public Tokens tokens;
-        public OAuth.OAuthSession session;        
+        public OAuth.OAuthSession session;
         public string id, level, enemy;
         public string[] enemyfile;
 
@@ -34,8 +34,11 @@ namespace Granbluefantasy_RaidFinder
             try
             {
                 session = CoreTweet.OAuth.Authorize(Properties.Settings.Default.APIKey, Properties.Settings.Default.APISecret);
-                tokens = Tokens.Create(Properties.Settings.Default.APIKey, Properties.Settings.Default.APISecret, Properties.Settings.Default.AccessToken, Properties.Settings.Default.AccessTokenSecret);
-                var tes = tokens.Account.VerifyCredentials();
+                tokens = Tokens.Create(Properties.Settings.Default.APIKey,
+                    Properties.Settings.Default.APISecret,
+                    Properties.Settings.Default.AccessToken,
+                    Properties.Settings.Default.AccessTokenSecret);
+                tokens.Account.VerifyCredentials();
                 MessageBox.Show("起動時初期化完了", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 RandomCopy.Enabled = false;
             }
@@ -43,32 +46,6 @@ namespace Granbluefantasy_RaidFinder
             {
                 Authorize();
             }
-
-            //要見直し
-            /*
-            if (Properties.Settings.Default.AccessToken == null || Properties.Settings.Default.AccessTokenSecret == null)
-            {
-                Authorize();
-            }
-            else
-            {
-                try
-                {
-                    session = CoreTweet.OAuth.Authorize(Properties.Settings.Default.APIKey, Properties.Settings.Default.APISecret);
-                    tokens = Tokens.Create(Properties.Settings.Default.APIKey, Properties.Settings.Default.APISecret, Properties.Settings.Default.AccessToken, Properties.Settings.Default.AccessTokenSecret);
-                    var tes = tokens.Account.VerifyCredentials();
-                    MessageBox.Show("起動時初期化完了", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RandomCopy.Enabled = false;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                    MessageBox.Show("エラーが発生したため再認証を行います");
-
-                    Authorize();
-                }
-            }
-            */
 
             //dataGridView1へボタンの配置
             DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
@@ -86,7 +63,7 @@ namespace Granbluefantasy_RaidFinder
             wc.Encoding = System.Text.Encoding.GetEncoding("shift_jis");
             downloadedfile = wc.DownloadString("http://closetheworld.softether.net:1717/Enemys.txt");
             enemyfile = downloadedfile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            for(int i = 0; enemyfile.Count() > i; i++)
+            for (int i = 0; enemyfile.Count() > i; i++)
             {
                 sourcelevel = enemyfile[i].Substring(1, 2);
                 if (Convert.ToInt32(sourcelevel) < 20)
@@ -127,7 +104,6 @@ namespace Granbluefantasy_RaidFinder
         {
             backgroundWorker1.WorkerSupportsCancellation = true;
 
-            //未検証
             //切断された時3s待機後再接続試行
             var observable = tokens.Streaming.FilterAsObservable(track: "ID");
             observable.Catch(observable.DelaySubscription(TimeSpan.FromSeconds(3)).Retry())
@@ -135,7 +111,7 @@ namespace Granbluefantasy_RaidFinder
             .Where((StreamingMessage m) => m.Type == MessageType.Create)
             .Cast<StatusMessage>()
             .Select((StatusMessage m) => m.Status.Text)
-            .Subscribe(TweetReceive);            
+            .Subscribe(TweetReceive);
         }
 
         //再認証
@@ -145,15 +121,16 @@ namespace Granbluefantasy_RaidFinder
         }
 
         //ツイート受信時に発生するイベント
-        public void TweetReceive (string twitext)
+        public void TweetReceive(string twitext)
         {
             int parsecnt = 0;
+
             if (twitext.Contains("参加者募集！参戦ID") == true)
             {
                 parsecnt = twitext.IndexOf("参戦ID");
                 id = twitext.Substring(parsecnt + 5, 8);
                 level = twitext.Substring(parsecnt + 16, 2);
-                
+
                 //正規表現での探索に置き換え検討
                 if (level == "10")
                 {
@@ -180,15 +157,18 @@ namespace Granbluefantasy_RaidFinder
                 {
                     enemy = twitext.Substring(parsecnt + 19);
                 }
+
                 parsecnt = enemy.IndexOf("https://");
-                try
+
+                if (parsecnt < 0)
+                {
+
+                }
+                else
                 {
                     enemy = enemy.Remove(parsecnt - 1);
                 }
-                catch (Exception exc)
-                {
-                    enemy = enemy.Remove(parsecnt);
-                }
+
 
                 Enemy e = new Enemy();
                 Enemy Tolist = new Enemy();
@@ -211,8 +191,12 @@ namespace Granbluefantasy_RaidFinder
                     e.Name = enemy;
                     e.ID = id;
                 }
+
             }
         }
+    
+
+
 
         //IDコピー処理
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
