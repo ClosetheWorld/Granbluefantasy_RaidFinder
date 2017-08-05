@@ -148,6 +148,10 @@ namespace Granbluefantasy_RaidFinder
                 {
                     level = "150";
                 }
+                else if (level == "20")
+                {
+                    level = "200";
+                }
 
                 if (Convert.ToInt32(level) > 99)
                 {

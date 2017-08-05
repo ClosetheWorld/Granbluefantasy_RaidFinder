@@ -86,6 +86,12 @@ namespace Granbluefantasy_RaidFinder
                         Tonull(e);
                     }
                     break;
+                case 200:
+                    if (e.Level != "200" || e.Name.IndexOf(requireenemy) == -1)
+                    {
+                        Tonull(e);
+                    }
+                    break;
 
                 default:
                     break;

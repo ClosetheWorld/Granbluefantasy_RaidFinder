@@ -68,3 +68,4 @@ D:\Users\Close_the_World\Documents\GitHub\Granbluefantasy_RaidFinder\Granbluefan
 D:\Users\Close_the_World\Documents\GitHub\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Release\Granbluefantasy_RaidFinder.csproj.GenerateResource.Cache
 D:\Users\Close_the_World\Documents\GitHub\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Release\Granbluefantasy_RaidFinder.exe
 D:\Users\Close_the_World\Documents\GitHub\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Release\Granbluefantasy_RaidFinder.pdb
+D:\Users\Close_the_World\Documents\GitHub\Granbluefantasy_RaidFinder\Granbluefantasy_RaidFinder\obj\Release\Granbluefantasy_RaidFinder.csprojResolveAssemblyReference.cache
