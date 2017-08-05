@@ -66,7 +66,7 @@ namespace Granbluefantasy_RaidFinder
             for (int i = 0; enemyfile.Count() > i; i++)
             {
                 sourcelevel = enemyfile[i].Substring(1, 2);
-                if (Convert.ToInt32(sourcelevel) < 20)
+                if (Convert.ToInt32(sourcelevel) < 50)
                 {
                     sourcelevel += "0";
                     sourcename = enemyfile[i].Substring(5);
