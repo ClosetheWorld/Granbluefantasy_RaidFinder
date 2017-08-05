@@ -114,7 +114,7 @@ namespace Granbluefantasy_RaidFinder
             Enemy e = new Enemy();
 
             e.Level = enemys[index].Substring(1, 2);
-            if (Convert.ToInt32(e.Level) < 20)
+            if (Convert.ToInt32(e.Level) < 50)
             {
                 e.Level += "0";
                 e.Name = enemys[index].Substring(5);
