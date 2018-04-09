@@ -157,7 +157,7 @@ namespace Granbluefantasy_RaidFinder
                 {
                     level = "200";
                 }
-
+                
                 if (Convert.ToInt32(level) > 99)
                 {
                     enemy = twitext.Substring(parsecnt + 13);
