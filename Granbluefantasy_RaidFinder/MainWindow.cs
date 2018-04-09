@@ -66,7 +66,7 @@ namespace Granbluefantasy_RaidFinder
             for (int i = 0; enemyfile.Count() > i; i++)
             {
                 sourcelevel = enemyfile[i].Substring(1, 2);
-                if (Convert.ToInt32(sourcelevel) < 20)
+                if (Convert.ToInt32(sourcelevel) < 30)
                 {
                     sourcelevel += "0";
                     sourcename = enemyfile[i].Substring(5);
@@ -124,12 +124,17 @@ namespace Granbluefantasy_RaidFinder
         public void TweetReceive(string twitext)
         {
             int parsecnt = 0;
-
-            if (twitext.Contains("参加者募集！参戦ID") == true)
+            if (twitext.Contains("参加者募集") == true && twitext.Contains("ムID") == false && twitext.Contains("ルーム") == false)
             {
                 parsecnt = twitext.IndexOf("参戦ID");
-                id = twitext.Substring(parsecnt + 5, 8);
-                level = twitext.Substring(parsecnt + 16, 2);
+                parsecnt -= 2;
+                id = twitext.Remove(parsecnt);
+                if(id.Count() > 8)
+                {
+                    id = id.Substring(id.Count() - 8);
+                }
+                parsecnt = twitext.IndexOf("参加者募集！");
+                level = twitext.Substring(parsecnt + 9, 2);
 
                 //正規表現での探索に置き換え検討
                 if (level == "10")
@@ -148,33 +153,32 @@ namespace Granbluefantasy_RaidFinder
                 {
                     level = "150";
                 }
+                else if (level == "20")
+                {
+                    level = "200";
+                }
 
                 if (Convert.ToInt32(level) > 99)
                 {
-                    enemy = twitext.Substring(parsecnt + 20);
+                    enemy = twitext.Substring(parsecnt + 13);
                 }
                 else
                 {
-                    enemy = twitext.Substring(parsecnt + 19);
+                    enemy = twitext.Substring(parsecnt + 12);
                 }
 
-                parsecnt = enemy.IndexOf("https://");
-
-                if (parsecnt < 0)
+               if((twitext.IndexOf("https://")) > 1)
                 {
-
-                }
-                else
-                {
-                    enemy = enemy.Remove(parsecnt - 1);
-                }
-
+                    parsecnt = enemy.Count();
+                    enemy = enemy.Remove(parsecnt - 24);
+                }                
 
                 Enemy e = new Enemy();
                 Enemy Tolist = new Enemy();
                 e.Level = level;
                 e.Name = enemy;
                 e.ID = id;
+                Console.WriteLine(id + " " + level + " " + enemy);
 
                 //チェック入りアイテムの絞り込み処理
                 foreach (int indexchecked in checkedListBox1.CheckedIndices)
@@ -192,7 +196,7 @@ namespace Granbluefantasy_RaidFinder
                     e.ID = id;
                 }
 
-            }
+            }            
         }
     
 
