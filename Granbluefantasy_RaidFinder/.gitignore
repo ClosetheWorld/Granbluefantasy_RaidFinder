@@ -2,5 +2,6 @@ bin/
 bin/debug
 bin/release
 obj/debug
+obj/release
 Granbluefantasy_RaidFinder.*.*
 *.exe
