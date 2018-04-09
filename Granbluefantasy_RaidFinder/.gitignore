@@ -5,3 +5,4 @@ obj/debug
 obj/release
 Granbluefantasy_RaidFinder.*.*
 *.exe
+Properties/
