@@ -1,6 +1,8 @@
 bin/
 bin/debug
 bin/release
-obj/debug
+obj/Debug
 Granbluefantasy_RaidFinder.*.*
 *.exe
+Properties/
+App.config
