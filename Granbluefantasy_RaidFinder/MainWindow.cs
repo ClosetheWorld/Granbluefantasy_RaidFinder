@@ -25,7 +25,7 @@ namespace Granbluefantasy_RaidFinder
         //見ないで        
         public Tokens tokens;
         public OAuth.OAuthSession session;
-        public string id, level, enemy;
+        public string id, level, enemy, twicomment;
         public string[] enemyfile;
 
         //初期化処理
@@ -124,14 +124,19 @@ namespace Granbluefantasy_RaidFinder
         public void TweetReceive(string twitext)
         {
             int parsecnt = 0;
-            if (twitext.Contains("参加者募集") == true && twitext.Contains("ムID") == false && twitext.Contains("ルーム") == false)
+            if (twitext.Contains("参加者募集！") == true && twitext.Contains("ムID") == false && twitext.Contains("ルーム") == false)
             {
                 parsecnt = twitext.IndexOf("参戦ID");
                 parsecnt -= 2;
                 id = twitext.Remove(parsecnt);
                 if(id.Count() > 8)
                 {
+                    twicomment = id.Remove(id.Count() - 8);                    
                     id = id.Substring(id.Count() - 8);
+                }
+                else
+                {
+                    twicomment = null;
                 }
                 parsecnt = twitext.IndexOf("参加者募集！");
                 level = twitext.Substring(parsecnt + 9, 2);
@@ -178,7 +183,9 @@ namespace Granbluefantasy_RaidFinder
                 e.Level = level;
                 e.Name = enemy;
                 e.ID = id;
-                Console.WriteLine(id + " " + level + " " + enemy);
+
+                //テストコード
+                //Console.WriteLine(id + " " + level + " " + enemy);
 
                 //チェック入りアイテムの絞り込み処理
                 foreach (int indexchecked in checkedListBox1.CheckedIndices)
@@ -199,9 +206,6 @@ namespace Granbluefantasy_RaidFinder
             }            
         }
     
-
-
-
         //IDコピー処理
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -221,7 +225,7 @@ namespace Granbluefantasy_RaidFinder
         //バージョン情報
         private void Menubar_Verinfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: 1.3.0.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Version: 1.5.1.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         //このアプリについて
@@ -290,6 +294,10 @@ namespace Granbluefantasy_RaidFinder
                     dataGridView1.Rows.Insert(0);
                     dataGridView1.Rows[0].Cells[0].Value = "Lv." + e.Level + " " + e.Name;
                     dataGridView1.Rows[0].Cells[1].Value = e.ID;
+                    if (twicomment != null)
+                    {
+                        dataGridView1.Rows[0].Cells[2].Value = twicomment;
+                    }
 
                     if (dataGridView1.Rows.Count > 200)
                     {

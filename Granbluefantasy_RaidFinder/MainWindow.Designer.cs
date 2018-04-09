@@ -35,6 +35,8 @@
             this.RandomCopy = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.Menubar_Menu = new System.Windows.Forms.ToolStripMenuItem();
+            this.Menubar_Setting = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Menubar_Close = new System.Windows.Forms.ToolStripMenuItem();
             this.Menubar_Edit = new System.Windows.Forms.ToolStripMenuItem();
             this.Menubar_ClearResult = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,8 +48,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.lv_enemy = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.multi_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Menubar_Setting = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -65,9 +66,11 @@
             // 
             this.checkedListBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(14, 52);
             this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.ScrollAlwaysVisible = true;
             this.checkedListBox1.Size = new System.Drawing.Size(200, 634);
             this.checkedListBox1.TabIndex = 1;
             // 
@@ -120,10 +123,22 @@
             this.Menubar_Menu.Size = new System.Drawing.Size(52, 20);
             this.Menubar_Menu.Text = "メニュー";
             // 
+            // Menubar_Setting
+            // 
+            this.Menubar_Setting.Name = "Menubar_Setting";
+            this.Menubar_Setting.Size = new System.Drawing.Size(98, 22);
+            this.Menubar_Setting.Text = "設定";
+            this.Menubar_Setting.Click += new System.EventHandler(this.Menubar_Setting_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(95, 6);
+            // 
             // Menubar_Close
             // 
             this.Menubar_Close.Name = "Menubar_Close";
-            this.Menubar_Close.Size = new System.Drawing.Size(152, 22);
+            this.Menubar_Close.Size = new System.Drawing.Size(98, 22);
             this.Menubar_Close.Text = "終了";
             this.Menubar_Close.Click += new System.EventHandler(this.Menubar_Close_Click);
             // 
@@ -191,7 +206,8 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.lv_enemy,
-            this.multi_id});
+            this.multi_id,
+            this.comment});
             this.dataGridView1.Location = new System.Drawing.Point(220, 52);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
@@ -205,7 +221,7 @@
             // lv_enemy
             // 
             this.lv_enemy.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.lv_enemy.FillWeight = 40F;
+            this.lv_enemy.FillWeight = 30F;
             this.lv_enemy.HeaderText = "エネミー名";
             this.lv_enemy.Name = "lv_enemy";
             this.lv_enemy.ReadOnly = true;
@@ -215,23 +231,22 @@
             // multi_id
             // 
             this.multi_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.multi_id.FillWeight = 40F;
+            this.multi_id.FillWeight = 10F;
             this.multi_id.HeaderText = "ID";
             this.multi_id.Name = "multi_id";
             this.multi_id.ReadOnly = true;
+            this.multi_id.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.multi_id.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // Menubar_Setting
+            // comment
             // 
-            this.Menubar_Setting.Name = "Menubar_Setting";
-            this.Menubar_Setting.Size = new System.Drawing.Size(152, 22);
-            this.Menubar_Setting.Text = "設定";
-            this.Menubar_Setting.Click += new System.EventHandler(this.Menubar_Setting_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.comment.FillWeight = 40F;
+            this.comment.HeaderText = "コメント";
+            this.comment.Name = "comment";
+            this.comment.ReadOnly = true;
+            this.comment.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.comment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // MainWindow
             // 
@@ -276,10 +291,11 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem Menubar_ClearResult;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lv_enemy;
-        private System.Windows.Forms.DataGridViewTextBoxColumn multi_id;
         private System.Windows.Forms.ToolStripMenuItem Menubar_Setting;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lv_enemy;
+        private System.Windows.Forms.DataGridViewTextBoxColumn multi_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comment;
     }
 }
 
