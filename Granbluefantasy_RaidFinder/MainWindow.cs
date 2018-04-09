@@ -225,7 +225,7 @@ namespace Granbluefantasy_RaidFinder
         //バージョン情報
         private void Menubar_Verinfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: 1.5.1.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Version: 1.5.1.1\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         //このアプリについて

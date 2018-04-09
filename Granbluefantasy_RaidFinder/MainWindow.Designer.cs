@@ -231,7 +231,7 @@
             // multi_id
             // 
             this.multi_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.multi_id.FillWeight = 10F;
+            this.multi_id.FillWeight = 25F;
             this.multi_id.HeaderText = "ID";
             this.multi_id.Name = "multi_id";
             this.multi_id.ReadOnly = true;
@@ -241,7 +241,7 @@
             // comment
             // 
             this.comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.comment.FillWeight = 40F;
+            this.comment.FillWeight = 25F;
             this.comment.HeaderText = "コメント";
             this.comment.Name = "comment";
             this.comment.ReadOnly = true;
