@@ -25,6 +25,7 @@ namespace Granbluefantasy_RaidFinder
         //見ないで        
         public Tokens tokens;
         public OAuth.OAuthSession session;
+        public int itemcount;
         public string id, level, enemy, twicomment;
         public string[] enemyfile;
 
@@ -77,6 +78,10 @@ namespace Granbluefantasy_RaidFinder
                 }
                 checkedListBox1.Items.Add("Lv." + sourcelevel + " " + sourcename);
             }
+
+            checkedListBox1.Items.Add("Lv.50 イベントエネミー");
+            itemcount = (checkedListBox1.Items.Count);
+
         }
 
         //検索開始
@@ -190,13 +195,25 @@ namespace Granbluefantasy_RaidFinder
                 //チェック入りアイテムの絞り込み処理
                 foreach (int indexchecked in checkedListBox1.CheckedIndices)
                 {
-                    Enemy temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
-                    Tolist = IndexFilter.Filtering(e, temp_e);
-
-                    if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
+                    if (indexchecked == itemcount - 1)
                     {
-                        AddList(Tolist);
-                        Ring();
+                        var temp_e = IndexFilter.EventFiltering(e, enemyfile);
+                        if (temp_e.Name != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
+                        {
+                            AddList(temp_e);
+                            Ring();
+                        }
+                    }
+                    else
+                    {
+                        Enemy temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
+                        Tolist = IndexFilter.Filtering(e, temp_e);
+
+                        if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
+                        {
+                            AddList(Tolist);
+                            Ring();
+                        }
                     }
                     e.Level = level;
                     e.Name = enemy;

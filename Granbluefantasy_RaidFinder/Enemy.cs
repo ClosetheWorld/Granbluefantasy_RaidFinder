@@ -99,6 +99,40 @@ namespace Granbluefantasy_RaidFinder
             return e;
         }
 
+        //イベントエネミーフィルタリング
+        public static Enemy EventFiltering(Enemy e, string[] list)
+        {
+            var temp = e;
+            switch (e.Level)
+            {
+                case "50":
+                    for (int i = 0; list.Count() > i; i++)
+                    {
+                        if (e.Name.StartsWith(list[i].Substring(5, 2)) == false &&
+                            e.Name.Contains("ティアマ") == false &&
+                            e.Name.Contains("コロッサ") == false &&
+                            e.Name.Contains("ユグドラ") == false &&
+                            e.Name.Contains("リヴァイ") == false &&
+                            e.Name.Contains("セレスト") == false &&
+                            e.Name.Contains("アドウェ") == false)
+                        {
+                            return e;
+                        }
+                        else
+                        {
+                            e = temp;
+                        }
+                    }
+                    break;
+                //イベントボスのレベル次第で追記
+                //case :
+                default:
+                    break;
+            }
+            Tonull(e);
+            return e;
+        }
+
         //ぬるぬる
         public static Enemy Tonull(Enemy e)
         {
