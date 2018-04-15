@@ -80,6 +80,7 @@ namespace Granbluefantasy_RaidFinder
             }
 
             checkedListBox1.Items.Add("Lv.50 イベントエネミー");
+            checkedListBox1.Items.Add("Lv.60 イベントエネミー");
             itemcount = (checkedListBox1.Items.Count);
 
         }
@@ -195,24 +196,27 @@ namespace Granbluefantasy_RaidFinder
                 //チェック入りアイテムの絞り込み処理
                 foreach (int indexchecked in checkedListBox1.CheckedIndices)
                 {
-                    if (indexchecked == itemcount - 1)
+                    if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
                     {
                         var temp_e = IndexFilter.EventFiltering(e, enemyfile);
                         if (temp_e.Name != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
                         {
                             AddList(temp_e);
+                            e = IndexFilter.Tonull(e);
                             Ring();
+                            break;
                         }
                     }
                     else
                     {
-                        Enemy temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
+                        var temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
                         Tolist = IndexFilter.Filtering(e, temp_e);
 
                         if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
                         {
                             AddList(Tolist);
                             Ring();
+                            break;
                         }
                     }
                     e.Level = level;

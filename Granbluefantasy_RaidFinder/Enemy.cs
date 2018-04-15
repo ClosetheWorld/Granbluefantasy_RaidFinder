@@ -123,9 +123,24 @@ namespace Granbluefantasy_RaidFinder
                             e = temp;
                         }
                     }
+                    break;                
+                case "60":
+                    for(int i = 0; list.Count() > i; i++)
+                    {
+                        if(e.Name.StartsWith(list[i].Substring(5, 2)) == false &&
+                            e.Name.Contains("リヴァイ") == false &&
+                            e.Name.Contains("ユグドラ") == false)
+                        {
+                            return e;
+                        }
+                        else
+                        {
+                            e = temp;
+                        }
+                    }
                     break;
                 //イベントボスのレベル次第で追記
-                //case :
+                //case "":
                 default:
                     break;
             }
