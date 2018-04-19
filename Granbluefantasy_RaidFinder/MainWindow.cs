@@ -184,35 +184,35 @@ namespace Granbluefantasy_RaidFinder
                     enemy = enemy.Remove(parsecnt - 24);
                 }                
 
-                Enemy e = new Enemy();
-                Enemy Tolist = new Enemy();
+                var e = new Enemy.Model.Enemy();
+                var Tolist = new Enemy.Model.Enemy();
                 e.Level = level;
-                e.Name = enemy;
+                e.Name_ja = enemy;
                 e.ID = id;
 
                 //テストコード
                 //Console.WriteLine(id + " " + level + " " + enemy);
-
+                
                 //チェック入りアイテムの絞り込み処理
                 foreach (int indexchecked in checkedListBox1.CheckedIndices)
                 {
                     if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
                     {
-                        var temp_e = IndexFilter.EventFiltering(e, enemyfile);
-                        if (temp_e.Name != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
+                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(e, enemyfile);
+                        if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
                         {
                             AddList(temp_e);
-                            e = IndexFilter.Tonull(e);
+                            e = Enemy.Model.IndexFilter.Tonull(e);
                             Ring();
                             break;
                         }
                     }
                     else
                     {
-                        var temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
-                        Tolist = IndexFilter.Filtering(e, temp_e);
+                        var temp_e = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
+                        Tolist = Enemy.Model.IndexFilter.Filtering(e, temp_e);
 
-                        if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
+                        if (Tolist.Name_ja != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
                         {
                             AddList(Tolist);
                             Ring();
@@ -220,7 +220,7 @@ namespace Granbluefantasy_RaidFinder
                         }
                     }
                     e.Level = level;
-                    e.Name = enemy;
+                    e.Name_ja = enemy;
                     e.ID = id;
                 }
 
@@ -304,7 +304,7 @@ namespace Granbluefantasy_RaidFinder
         }
 
         //DataGridViewに追加
-        public void AddList(Enemy e)
+        public void AddList(Enemy.Model.Enemy e)
         {
             if (dataGridView1.IsDisposed) return;
             if (dataGridView1.InvokeRequired)
@@ -313,7 +313,7 @@ namespace Granbluefantasy_RaidFinder
                 {
                     //上から追加
                     dataGridView1.Rows.Insert(0);
-                    dataGridView1.Rows[0].Cells[0].Value = "Lv." + e.Level + " " + e.Name;
+                    dataGridView1.Rows[0].Cells[0].Value = "Lv." + e.Level + " " + e.Name_ja;
                     dataGridView1.Rows[0].Cells[1].Value = e.ID;
                     if (twicomment != null)
                     {
