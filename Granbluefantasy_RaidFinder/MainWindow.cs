@@ -59,6 +59,7 @@ namespace Granbluefantasy_RaidFinder
             dataGridView1.Columns.Add(btn);
 
             //自鯖からエネミーリスト生成
+            /*
             string downloadedfile, sourcelevel, sourcename;
             System.Net.WebClient wc = new System.Net.WebClient();
             wc.Encoding = System.Text.Encoding.GetEncoding("shift_jis");
@@ -78,6 +79,21 @@ namespace Granbluefantasy_RaidFinder
                 }
                 checkedListBox1.Items.Add("Lv." + sourcelevel + " " + sourcename);
             }
+            */
+
+            string xmlpath;
+            xmlpath = "gbfrf.xml";
+            System.IO.StreamReader sr = new System.IO.StreamReader(xmlpath);
+            var ser = new System.Xml.Serialization.XmlSerializer(typeof(Enemy.Model.EnemyCollection));
+            var enemarray = (Enemy.Model.EnemyCollection)ser.Deserialize(sr);
+            sr.Close();
+
+            for (int i = 0; enemarray.eArray.Count() > i; i++)
+            {
+                checkedListBox1.Items.Add("Lv." + enemarray.eArray[i].Level +" "+ enemarray.eArray[i].Name_ja);
+            }
+
+
 
             checkedListBox1.Items.Add("Lv.50 イベントエネミー");
             checkedListBox1.Items.Add("Lv.60 イベントエネミー");

@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Enemy.Model
 {
-    [System.Xml.Serialization.XmlRoot("enemys")]
-    public class Enemys
-    {
-        [System.Xml.Serialization.XmlElement("enemys")]
-        public Enemy Enemy { get; set; }
+    [Serializable]    
+    [System.Xml.Serialization.XmlRoot("EnemyCollection")]
+    public class EnemyCollection
+    {        
+        [System.Xml.Serialization.XmlArray("enemys")]
+        [System.Xml.Serialization.XmlArrayItem("enemy", typeof(Enemy))]
+        public Enemy[] eArray { get; set; }
     }
     public class Enemy
     {
@@ -21,7 +23,7 @@ namespace Enemy.Model
         [System.Xml.Serialization.XmlElement("level")]
         public string Level { get; set; }
 
-        public string ID;
+        public string ID = "";
 
         //コンストラクタ
         public Enemy()
