@@ -27,7 +27,7 @@ namespace Granbluefantasy_RaidFinder
         public OAuth.OAuthSession session;
         public int itemcount;
         public string id, level, enemy, twicomment;
-        public string[] enemyfile;
+        public Enemy.Model.EnemyCollection master;
 
         //初期化処理
         private void Form1_Load(object sender, EventArgs e)
@@ -58,47 +58,21 @@ namespace Granbluefantasy_RaidFinder
             btn.FillWeight = 20;
             dataGridView1.Columns.Add(btn);
 
-            //自鯖からエネミーリスト生成
-            /*
-            string downloadedfile, sourcelevel, sourcename;
+            //GitHubからエネミーデータマスターをDL -> リストへ追加            
+            var xmluri = "https://raw.githubusercontent.com/ClosetheWorld/GBFEnemyXml/master/gbfrf.xml";
             System.Net.WebClient wc = new System.Net.WebClient();
-            wc.Encoding = System.Text.Encoding.GetEncoding("shift_jis");
-            downloadedfile = wc.DownloadString("http://closetheworld.softether.net:1717/Enemys.txt");
-            enemyfile = downloadedfile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            for (int i = 0; enemyfile.Count() > i; i++)
-            {
-                sourcelevel = enemyfile[i].Substring(1, 2);
-                if (Convert.ToInt32(sourcelevel) < 30)
-                {
-                    sourcelevel += "0";
-                    sourcename = enemyfile[i].Substring(5);
-                }
-                else
-                {
-                    sourcename = enemyfile[i].Substring(4);
-                }
-                checkedListBox1.Items.Add("Lv." + sourcelevel + " " + sourcename);
-            }
-            */
-
-            string xmlpath;
-            xmlpath = "gbfrf.xml";
-            System.IO.StreamReader sr = new System.IO.StreamReader(xmlpath);
+            wc.Encoding = System.Text.Encoding.GetEncoding("utf-8");
+            var downloadedfile = wc.OpenRead(xmluri);            
             var ser = new System.Xml.Serialization.XmlSerializer(typeof(Enemy.Model.EnemyCollection));
-            var enemarray = (Enemy.Model.EnemyCollection)ser.Deserialize(sr);
-            sr.Close();
-
-            for (int i = 0; enemarray.eArray.Count() > i; i++)
+            master = (Enemy.Model.EnemyCollection)ser.Deserialize(downloadedfile);
+            wc.Dispose(); //リソース開放
+            for (int i = 0; master.Array.Count() > i; i++)
             {
-                checkedListBox1.Items.Add("Lv." + enemarray.eArray[i].Level +" "+ enemarray.eArray[i].Name_ja);
+                checkedListBox1.Items.Add("Lv." + master.Array[i].Level +" "+ master.Array[i].Name_ja);
             }
-
-
-
             checkedListBox1.Items.Add("Lv.50 イベントエネミー");
             checkedListBox1.Items.Add("Lv.60 イベントエネミー");
             itemcount = (checkedListBox1.Items.Count);
-
         }
 
         //検索開始
@@ -214,7 +188,7 @@ namespace Granbluefantasy_RaidFinder
                 {
                     if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
                     {
-                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(e, enemyfile);
+                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(e, master);
                         if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
                         {
                             AddList(temp_e);
@@ -225,7 +199,7 @@ namespace Granbluefantasy_RaidFinder
                     }
                     else
                     {
-                        var temp_e = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
+                        var temp_e = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, master);
                         Tolist = Enemy.Model.IndexFilter.Filtering(e, temp_e);
 
                         if (Tolist.Name_ja != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")

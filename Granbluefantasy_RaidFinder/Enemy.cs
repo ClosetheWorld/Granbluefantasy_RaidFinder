@@ -12,7 +12,7 @@ namespace Enemy.Model
     {        
         [System.Xml.Serialization.XmlArray("enemys")]
         [System.Xml.Serialization.XmlArrayItem("enemy", typeof(Enemy))]
-        public Enemy[] eArray { get; set; }
+        public Enemy[] Array { get; set; }
     }
     public class Enemy
     {
@@ -114,15 +114,15 @@ namespace Enemy.Model
         }
 
         //イベントエネミーフィルタリング
-        public static Enemy EventFiltering(Enemy e, string[] list)
+        public static Enemy EventFiltering(Enemy e, EnemyCollection master)
         {
             var temp = e;
             switch (e.Level)
             {
                 case "50":
-                    for (int i = 0; list.Count() > i; i++)
+                    for (int i = 0; master.Array.Count() > i; i++)
                     {
-                        if (e.Name_ja.StartsWith(list[i].Substring(5, 2)) == false &&
+                        if (e.Name_ja.StartsWith(master.Array[i].Name_ja) == false &&
                             e.Name_ja.Contains("ティアマ") == false &&
                             e.Name_ja.Contains("コロッサ") == false &&
                             e.Name_ja.Contains("ユグドラ") == false &&
@@ -139,9 +139,9 @@ namespace Enemy.Model
                     }
                     break;                
                 case "60":
-                    for(int i = 0; list.Count() > i; i++)
+                    for(int i = 0; master.Array.Count() > i; i++)
                     {
-                        if(e.Name_ja.StartsWith(list[i].Substring(5, 2)) == false &&
+                        if(e.Name_ja.StartsWith(master.Array[i].Name_ja) == false &&
                             e.Name_ja.Contains("リヴァイ") == false &&
                             e.Name_ja.Contains("ユグドラ") == false)
                         {
@@ -172,19 +172,19 @@ namespace Enemy.Model
         }        
 
         //表示要求Enemy変数の作成
-        public static Enemy GenerateRequireEnemy(int index,string[] enemys)
+        public static Enemy GenerateRequireEnemy(int index, EnemyCollection enemys)
         {
             Enemy e = new Enemy();
 
-            e.Level = enemys[index].Substring(1, 2);
+            e.Level = enemys.Array[index].Name_ja.Substring(1, 2);
             if (Convert.ToInt32(e.Level) < 21)
             {
                 e.Level += "0";
-                e.Name_ja = enemys[index].Substring(5);
+                e.Name_ja = enemys.Array[index].Name_ja.Substring(5);
             }
             else
             {
-                e.Name_ja = enemys[index].Substring(4);
+                e.Name_ja = enemys.Array[index].Name_ja.Substring(4);
             }
 
             return e;
