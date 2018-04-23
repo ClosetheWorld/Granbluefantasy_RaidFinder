@@ -24,6 +24,7 @@ namespace Enemy.Model
         public string Level { get; set; }
 
         public string ID = "";
+        public string Comment = "";
 
         //コンストラクタ
         public Enemy()
@@ -32,6 +33,7 @@ namespace Enemy.Model
             Name_en = "";
             Level = "";
             ID = "FFFFFFFF";
+            Comment = "";
         }
     }
 
@@ -176,16 +178,8 @@ namespace Enemy.Model
         {
             Enemy e = new Enemy();
 
-            e.Level = enemys.Array[index].Name_ja.Substring(1, 2);
-            if (Convert.ToInt32(e.Level) < 21)
-            {
-                e.Level += "0";
-                e.Name_ja = enemys.Array[index].Name_ja.Substring(5);
-            }
-            else
-            {
-                e.Name_ja = enemys.Array[index].Name_ja.Substring(4);
-            }
+            e.Level = enemys.Array[index].Level;
+            e.Name_ja = enemys.Array[index].Name_ja;
 
             return e;
         }        

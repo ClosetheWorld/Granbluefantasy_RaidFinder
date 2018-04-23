@@ -120,65 +120,49 @@ namespace Granbluefantasy_RaidFinder
         public void TweetReceive(string twitext)
         {
             int parsecnt = 0;
+            var ReceivedEnemy = new Enemy.Model.Enemy();
             if (twitext.Contains("参加者募集！") == true && twitext.Contains("ムID") == false && twitext.Contains("ルーム") == false)
             {
                 parsecnt = twitext.IndexOf("参戦ID");
                 parsecnt -= 2;
-                id = twitext.Remove(parsecnt);
-                if(id.Count() > 8)
+                ReceivedEnemy.ID = twitext.Remove(parsecnt);
+                if(ReceivedEnemy.ID.Count() > 8)
                 {
-                    twicomment = id.Remove(id.Count() - 8);                    
-                    id = id.Substring(id.Count() - 8);
+                    ReceivedEnemy.Comment = ReceivedEnemy.ID.Remove(ReceivedEnemy.ID.Count() - 8);                    
+                    ReceivedEnemy.ID = ReceivedEnemy.ID.Substring(ReceivedEnemy.ID.Count() - 8);
                 }
                 else
                 {
-                    twicomment = null;
+                    ReceivedEnemy.Comment = null;
                 }
                 parsecnt = twitext.IndexOf("参加者募集！");
-                level = twitext.Substring(parsecnt + 9, 2);
-
-                //正規表現での探索に置き換え検討
-                if (level == "10")
+                ReceivedEnemy.Level = twitext.Substring(parsecnt + 9, 2);
+              
+                if (Convert.ToInt32(ReceivedEnemy.Level) >= 10 &&
+                    Convert.ToInt32(ReceivedEnemy.Level) <= 20)
                 {
-                    level = "100";
-                }
-                else if (level == "11")
-                {
-                    level = "110";
-                }
-                else if (level == "12")
-                {
-                    level = "120";
-                }
-                else if (level == "15")
-                {
-                    level = "150";
-                }
-                else if (level == "20")
-                {
-                    level = "200";
-                }
+                    ReceivedEnemy.Level += "0";
+                }                
                 
-                if (Convert.ToInt32(level) > 99)
+                if (Convert.ToInt32(ReceivedEnemy.Level) > 99)
                 {
-                    enemy = twitext.Substring(parsecnt + 13);
+                    ReceivedEnemy.Name_ja = twitext.Substring(parsecnt + 13);
                 }
                 else
                 {
-                    enemy = twitext.Substring(parsecnt + 12);
+                    ReceivedEnemy.Name_ja = twitext.Substring(parsecnt + 12);
                 }
 
                if((twitext.IndexOf("https://")) > 1)
                 {
-                    parsecnt = enemy.Count();
-                    enemy = enemy.Remove(parsecnt - 24);
+                    parsecnt = ReceivedEnemy.Name_ja.Count();
+                    ReceivedEnemy.Name_ja = ReceivedEnemy.Name_ja.Remove(parsecnt - 24);
                 }                
-
-                var e = new Enemy.Model.Enemy();
+                
                 var Tolist = new Enemy.Model.Enemy();
-                e.Level = level;
-                e.Name_ja = enemy;
-                e.ID = id;
+                level = ReceivedEnemy.Level;
+                enemy = ReceivedEnemy.Name_ja;
+                id = ReceivedEnemy.ID;
 
                 //テストコード
                 //Console.WriteLine(id + " " + level + " " + enemy);
@@ -188,11 +172,11 @@ namespace Granbluefantasy_RaidFinder
                 {
                     if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
                     {
-                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(e, master);
+                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(ReceivedEnemy, master);
                         if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
                         {
                             AddList(temp_e);
-                            e = Enemy.Model.IndexFilter.Tonull(e);
+                            ReceivedEnemy = Enemy.Model.IndexFilter.Tonull(ReceivedEnemy);
                             Ring();
                             break;
                         }
@@ -200,7 +184,7 @@ namespace Granbluefantasy_RaidFinder
                     else
                     {
                         var temp_e = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, master);
-                        Tolist = Enemy.Model.IndexFilter.Filtering(e, temp_e);
+                        Tolist = Enemy.Model.IndexFilter.Filtering(ReceivedEnemy, temp_e);
 
                         if (Tolist.Name_ja != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
                         {
@@ -209,9 +193,9 @@ namespace Granbluefantasy_RaidFinder
                             break;
                         }
                     }
-                    e.Level = level;
-                    e.Name_ja = enemy;
-                    e.ID = id;
+                    ReceivedEnemy.Level = level;
+                    ReceivedEnemy.Name_ja = enemy;
+                    ReceivedEnemy.ID = id;
                 }
 
             }            
