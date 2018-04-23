@@ -27,7 +27,7 @@ namespace Granbluefantasy_RaidFinder
         public OAuth.OAuthSession session;
         public int itemcount;
         public string id, level, enemy, twicomment;
-        public string[] enemyfile;
+        public Enemy.Model.EnemyCollection master;
 
         //初期化処理
         private void Form1_Load(object sender, EventArgs e)
@@ -58,31 +58,21 @@ namespace Granbluefantasy_RaidFinder
             btn.FillWeight = 20;
             dataGridView1.Columns.Add(btn);
 
-            //自鯖からエネミーリスト生成
-            string downloadedfile, sourcelevel, sourcename;
+            //GitHubからエネミーデータマスターをDL -> リストへ追加            
+            var xmluri = "https://raw.githubusercontent.com/ClosetheWorld/GBFEnemyXml/master/gbfrf.xml";
             System.Net.WebClient wc = new System.Net.WebClient();
-            wc.Encoding = System.Text.Encoding.GetEncoding("shift_jis");
-            downloadedfile = wc.DownloadString("http://closetheworld.softether.net:1717/Enemys.txt");
-            enemyfile = downloadedfile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            for (int i = 0; enemyfile.Count() > i; i++)
+            wc.Encoding = System.Text.Encoding.GetEncoding("utf-8");
+            var downloadedfile = wc.OpenRead(xmluri);            
+            var ser = new System.Xml.Serialization.XmlSerializer(typeof(Enemy.Model.EnemyCollection));
+            master = (Enemy.Model.EnemyCollection)ser.Deserialize(downloadedfile);
+            wc.Dispose(); //リソース開放
+            for (int i = 0; master.Array.Count() > i; i++)
             {
-                sourcelevel = enemyfile[i].Substring(1, 2);
-                if (Convert.ToInt32(sourcelevel) < 30)
-                {
-                    sourcelevel += "0";
-                    sourcename = enemyfile[i].Substring(5);
-                }
-                else
-                {
-                    sourcename = enemyfile[i].Substring(4);
-                }
-                checkedListBox1.Items.Add("Lv." + sourcelevel + " " + sourcename);
+                checkedListBox1.Items.Add("Lv." + master.Array[i].Level +" "+ master.Array[i].Name_ja);
             }
-
             checkedListBox1.Items.Add("Lv.50 イベントエネミー");
             checkedListBox1.Items.Add("Lv.60 イベントエネミー");
             itemcount = (checkedListBox1.Items.Count);
-
         }
 
         //検索開始
@@ -130,98 +120,82 @@ namespace Granbluefantasy_RaidFinder
         public void TweetReceive(string twitext)
         {
             int parsecnt = 0;
+            var ReceivedEnemy = new Enemy.Model.Enemy();
             if (twitext.Contains("参加者募集！") == true && twitext.Contains("ムID") == false && twitext.Contains("ルーム") == false)
             {
                 parsecnt = twitext.IndexOf("参戦ID");
                 parsecnt -= 2;
-                id = twitext.Remove(parsecnt);
-                if(id.Count() > 8)
+                ReceivedEnemy.ID = twitext.Remove(parsecnt);
+                if(ReceivedEnemy.ID.Count() > 8)
                 {
-                    twicomment = id.Remove(id.Count() - 8);                    
-                    id = id.Substring(id.Count() - 8);
+                    ReceivedEnemy.Comment = ReceivedEnemy.ID.Remove(ReceivedEnemy.ID.Count() - 8);                    
+                    ReceivedEnemy.ID = ReceivedEnemy.ID.Substring(ReceivedEnemy.ID.Count() - 8);
                 }
                 else
                 {
-                    twicomment = null;
+                    ReceivedEnemy.Comment = null;
                 }
                 parsecnt = twitext.IndexOf("参加者募集！");
-                level = twitext.Substring(parsecnt + 9, 2);
-
-                //正規表現での探索に置き換え検討
-                if (level == "10")
+                ReceivedEnemy.Level = twitext.Substring(parsecnt + 9, 2);
+              
+                if (Convert.ToInt32(ReceivedEnemy.Level) >= 10 &&
+                    Convert.ToInt32(ReceivedEnemy.Level) <= 20)
                 {
-                    level = "100";
-                }
-                else if (level == "11")
-                {
-                    level = "110";
-                }
-                else if (level == "12")
-                {
-                    level = "120";
-                }
-                else if (level == "15")
-                {
-                    level = "150";
-                }
-                else if (level == "20")
-                {
-                    level = "200";
-                }
+                    ReceivedEnemy.Level += "0";
+                }                
                 
-                if (Convert.ToInt32(level) > 99)
+                if (Convert.ToInt32(ReceivedEnemy.Level) > 99)
                 {
-                    enemy = twitext.Substring(parsecnt + 13);
+                    ReceivedEnemy.Name_ja = twitext.Substring(parsecnt + 13);
                 }
                 else
                 {
-                    enemy = twitext.Substring(parsecnt + 12);
+                    ReceivedEnemy.Name_ja = twitext.Substring(parsecnt + 12);
                 }
 
                if((twitext.IndexOf("https://")) > 1)
                 {
-                    parsecnt = enemy.Count();
-                    enemy = enemy.Remove(parsecnt - 24);
+                    parsecnt = ReceivedEnemy.Name_ja.Count();
+                    ReceivedEnemy.Name_ja = ReceivedEnemy.Name_ja.Remove(parsecnt - 24);
                 }                
-
-                Enemy e = new Enemy();
-                Enemy Tolist = new Enemy();
-                e.Level = level;
-                e.Name = enemy;
-                e.ID = id;
+                
+                var Tolist = new Enemy.Model.Enemy();
+                level = ReceivedEnemy.Level;
+                enemy = ReceivedEnemy.Name_ja;
+                id = ReceivedEnemy.ID;
 
                 //テストコード
                 //Console.WriteLine(id + " " + level + " " + enemy);
-
+                
                 //チェック入りアイテムの絞り込み処理
                 foreach (int indexchecked in checkedListBox1.CheckedIndices)
                 {
                     if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
                     {
-                        var temp_e = IndexFilter.EventFiltering(e, enemyfile);
-                        if (temp_e.Name != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
+                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(ReceivedEnemy, master);
+                        if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
                         {
                             AddList(temp_e);
-                            e = IndexFilter.Tonull(e);
+                            ReceivedEnemy = Enemy.Model.IndexFilter.Tonull(ReceivedEnemy);
                             Ring();
                             break;
                         }
                     }
                     else
                     {
-                        var temp_e = IndexFilter.GenerateRequireEnemy(indexchecked, enemyfile);
-                        Tolist = IndexFilter.Filtering(e, temp_e);
+                        var temp_e = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, master);
+                        Tolist = Enemy.Model.IndexFilter.Filtering(ReceivedEnemy, temp_e);
 
-                        if (Tolist.Name != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
+                        if (Tolist.Name_ja != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
                         {
                             AddList(Tolist);
                             Ring();
                             break;
                         }
                     }
-                    e.Level = level;
-                    e.Name = enemy;
-                    e.ID = id;
+                    ReceivedEnemy.Level = level;
+                    ReceivedEnemy.Name_ja = enemy;
+                    ReceivedEnemy.ID = id;
                 }
 
             }            
@@ -304,7 +278,7 @@ namespace Granbluefantasy_RaidFinder
         }
 
         //DataGridViewに追加
-        public void AddList(Enemy e)
+        public void AddList(Enemy.Model.Enemy e)
         {
             if (dataGridView1.IsDisposed) return;
             if (dataGridView1.InvokeRequired)
@@ -313,7 +287,7 @@ namespace Granbluefantasy_RaidFinder
                 {
                     //上から追加
                     dataGridView1.Rows.Insert(0);
-                    dataGridView1.Rows[0].Cells[0].Value = "Lv." + e.Level + " " + e.Name;
+                    dataGridView1.Rows[0].Cells[0].Value = "Lv." + e.Level + " " + e.Name_ja;
                     dataGridView1.Rows[0].Cells[1].Value = e.ID;
                     if (twicomment != null)
                     {
