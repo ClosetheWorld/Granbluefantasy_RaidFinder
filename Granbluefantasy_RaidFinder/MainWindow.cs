@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using CoreTweet;
 using CoreTweet.Streaming;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 namespace Granbluefantasy_RaidFinder
 {
@@ -25,8 +20,7 @@ namespace Granbluefantasy_RaidFinder
         //見ないで        
         public Tokens tokens;
         public OAuth.OAuthSession session;
-        public int itemcount;
-        public string id, level, enemy, twicomment;
+        public int itemcount;        
         public Enemy.Model.EnemyCollection master;
 
         //初期化処理
@@ -39,9 +33,7 @@ namespace Granbluefantasy_RaidFinder
                     Properties.Settings.Default.APISecret,
                     Properties.Settings.Default.AccessToken,
                     Properties.Settings.Default.AccessTokenSecret);
-                tokens.Account.VerifyCredentials();
-                MessageBox.Show("起動時初期化完了", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                RandomCopy.Enabled = false;
+                tokens.Account.VerifyCredentials();                
             }
             catch (Exception ex)
             {
@@ -73,20 +65,15 @@ namespace Granbluefantasy_RaidFinder
             checkedListBox1.Items.Add("Lv.50 イベントエネミー");
             checkedListBox1.Items.Add("Lv.60 イベントエネミー");
             itemcount = (checkedListBox1.Items.Count);
+
+            MessageBox.Show("起動処理完了", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         //検索開始
         public void button1_Click(object sender, EventArgs e)
         {
-            backgroundWorker1.RunWorkerAsync();
-            RandomCopy.Enabled = true;
+            backgroundWorker1.RunWorkerAsync();            
             SearchStart.Enabled = false;
-        }
-
-        //ランダムにコピー
-        private void RandomCopy_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(id);
         }
 
         //閉じる
@@ -121,14 +108,19 @@ namespace Granbluefantasy_RaidFinder
         {
             int parsecnt = 0;
             var ReceivedEnemy = new Enemy.Model.Enemy();
+            var LanguageParam = new bool();
+            string ReceivedName = "";
+            string level = "";
+            string id = "";
             if (twitext.Contains("参加者募集！") == true && twitext.Contains("ムID") == false && twitext.Contains("ルーム") == false)
             {
+                LanguageParam = true;
                 parsecnt = twitext.IndexOf("参戦ID");
                 parsecnt -= 2;
                 ReceivedEnemy.ID = twitext.Remove(parsecnt);
-                if(ReceivedEnemy.ID.Count() > 8)
+                if (ReceivedEnemy.ID.Count() > 8)
                 {
-                    ReceivedEnemy.Comment = ReceivedEnemy.ID.Remove(ReceivedEnemy.ID.Count() - 8);                    
+                    ReceivedEnemy.Comment = ReceivedEnemy.ID.Remove(ReceivedEnemy.ID.Count() - 8);
                     ReceivedEnemy.ID = ReceivedEnemy.ID.Substring(ReceivedEnemy.ID.Count() - 8);
                 }
                 else
@@ -137,68 +129,113 @@ namespace Granbluefantasy_RaidFinder
                 }
                 parsecnt = twitext.IndexOf("参加者募集！");
                 ReceivedEnemy.Level = twitext.Substring(parsecnt + 9, 2);
-              
+
                 if (Convert.ToInt32(ReceivedEnemy.Level) >= 10 &&
                     Convert.ToInt32(ReceivedEnemy.Level) <= 20)
                 {
                     ReceivedEnemy.Level += "0";
-                }                
-                
+                }
+
                 if (Convert.ToInt32(ReceivedEnemy.Level) > 99)
                 {
-                    ReceivedEnemy.Name_ja = twitext.Substring(parsecnt + 13);
+                    ReceivedName = twitext.Substring(parsecnt + 13);
                 }
                 else
                 {
-                    ReceivedEnemy.Name_ja = twitext.Substring(parsecnt + 12);
+                    ReceivedName = twitext.Substring(parsecnt + 12);
                 }
 
-               if((twitext.IndexOf("https://")) > 1)
+                if ((twitext.IndexOf("https://")) > 1)
                 {
-                    parsecnt = ReceivedEnemy.Name_ja.Count();
-                    ReceivedEnemy.Name_ja = ReceivedEnemy.Name_ja.Remove(parsecnt - 24);
-                }                
-                
-                var Tolist = new Enemy.Model.Enemy();
-                level = ReceivedEnemy.Level;
-                enemy = ReceivedEnemy.Name_ja;
-                id = ReceivedEnemy.ID;
-
-                //テストコード
-                //Console.WriteLine(id + " " + level + " " + enemy);
-                
-                //チェック入りアイテムの絞り込み処理
-                foreach (int indexchecked in checkedListBox1.CheckedIndices)
+                    parsecnt = ReceivedName.Count();
+                    ReceivedName = ReceivedName.Remove(parsecnt - 24);
+                }
+                ReceivedEnemy.Name_en = ReceivedName;
+            }
+            else if (twitext.Contains("I need backup!") == true)
+            {
+                LanguageParam = false;
+                parsecnt = twitext.IndexOf("Battle");
+                parsecnt -= 2;
+                ReceivedEnemy.ID = twitext.Remove(parsecnt);
+                if (ReceivedEnemy.ID.Count() > 8)
                 {
-                    if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
-                    {
-                        var temp_e = Enemy.Model.IndexFilter.EventFiltering(ReceivedEnemy, master);
-                        if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
-                        {
-                            AddList(temp_e);
-                            ReceivedEnemy = Enemy.Model.IndexFilter.Tonull(ReceivedEnemy);
-                            Ring();
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        var temp_e = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, master);
-                        Tolist = Enemy.Model.IndexFilter.Filtering(ReceivedEnemy, temp_e);
+                    ReceivedEnemy.Comment = ReceivedEnemy.ID.Remove(ReceivedEnemy.ID.Count() - 8);
+                    ReceivedEnemy.ID = ReceivedEnemy.ID.Substring(ReceivedEnemy.ID.Count() - 8);
+                }
+                else
+                {
+                    ReceivedEnemy.Comment = null;
+                }
 
-                        if (Tolist.Name_ja != "undefined" && Tolist.ID != "FFFFFFFF" || Tolist.Level != "999")
-                        {
-                            AddList(Tolist);
-                            Ring();
-                            break;
-                        }
+                parsecnt = twitext.IndexOf("Lvl");
+                ReceivedEnemy.Level = twitext.Substring(parsecnt + 4, 2);
+
+                if (Convert.ToInt32(ReceivedEnemy.Level) >= 10 &&
+                    Convert.ToInt32(ReceivedEnemy.Level) <= 20)
+                {
+                    ReceivedEnemy.Level += "0";
+                }
+
+                if (Convert.ToInt32(ReceivedEnemy.Level) > 99)
+                {
+                    ReceivedName = twitext.Substring(parsecnt + 8);
+                }
+                else
+                {
+                    ReceivedName = twitext.Substring(parsecnt + 7);
+                }
+
+                if ((twitext.IndexOf("https://")) > 1)
+                {
+                    parsecnt = ReceivedName.Count();
+                    ReceivedName = ReceivedName.Remove(parsecnt - 24);
+                }
+                ReceivedEnemy.Name_en = ReceivedName;
+            }
+
+            level = ReceivedEnemy.Level;
+            id = ReceivedEnemy.ID;
+
+            //チェック入りアイテムの絞り込み処理
+            foreach (int indexchecked in checkedListBox1.CheckedIndices)
+            {
+                if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
+                {
+                    var temp_e = Enemy.Model.IndexFilter.EventFiltering(ReceivedEnemy, master);
+                    if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
+                    {
+                        AddList(temp_e);
+                        ReceivedEnemy = Enemy.Model.IndexFilter.Tonull(ReceivedEnemy);
+                        Ring();
+                        break;
                     }
+                }
+                else
+                {
+                    var req = Enemy.Model.IndexFilter.GenerateRequireEnemy(indexchecked, master);
+                    var e = Enemy.Model.IndexFilter.Filtering(ReceivedEnemy, req, LanguageParam);
+
+                    if (e.Name_ja != "undefined" && e.Name_en != "undefined" && e.ID != "FFFFFFFF" || e.Level != "999")
+                    {
+                        AddList(e);
+                        Ring();
+                        break;
+                    }
+
                     ReceivedEnemy.Level = level;
-                    ReceivedEnemy.Name_ja = enemy;
+
+                    if (LanguageParam == true)
+                    {
+                        ReceivedEnemy.Name_ja = ReceivedName;
+                    }
+                    else if (LanguageParam == false)
+                    {
+                        ReceivedEnemy.Name_en = ReceivedName;
+                    }
                     ReceivedEnemy.ID = id;
                 }
-
-            }            
+            }
         }
     
         //IDコピー処理
@@ -220,7 +257,7 @@ namespace Granbluefantasy_RaidFinder
         //バージョン情報
         private void Menubar_Verinfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: 1.5.1.1\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Version: 1.6.0.0\nAuthor:@Close_the_World","バージョン情報",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         //このアプリについて
@@ -289,9 +326,9 @@ namespace Granbluefantasy_RaidFinder
                     dataGridView1.Rows.Insert(0);
                     dataGridView1.Rows[0].Cells[0].Value = "Lv." + e.Level + " " + e.Name_ja;
                     dataGridView1.Rows[0].Cells[1].Value = e.ID;
-                    if (twicomment != null)
+                    if (e.Comment != null)
                     {
-                        dataGridView1.Rows[0].Cells[2].Value = twicomment;
+                        dataGridView1.Rows[0].Cells[2].Value = e.Comment;
                     }
 
                     if (dataGridView1.Rows.Count > 200)

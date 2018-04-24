@@ -32,7 +32,6 @@
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SearchStart = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.RandomCopy = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.Menubar_Menu = new System.Windows.Forms.ToolStripMenuItem();
             this.Menubar_Setting = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,17 +87,6 @@
             // backgroundWorker1
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
-            // RandomCopy
-            // 
-            this.RandomCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.RandomCopy.Location = new System.Drawing.Point(117, 695);
-            this.RandomCopy.Name = "RandomCopy";
-            this.RandomCopy.Size = new System.Drawing.Size(97, 25);
-            this.RandomCopy.TabIndex = 3;
-            this.RandomCopy.Text = "ランダムにコピー";
-            this.RandomCopy.UseVisualStyleBackColor = true;
-            this.RandomCopy.Click += new System.EventHandler(this.RandomCopy_Click);
             // 
             // menuStrip1
             // 
@@ -254,7 +242,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.RandomCopy);
             this.Controls.Add(this.SearchStart);
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.label1);
@@ -279,7 +266,6 @@
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Button SearchStart;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Button RandomCopy;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem Menubar_Menu;
         private System.Windows.Forms.ToolStripMenuItem Menubar_Help;

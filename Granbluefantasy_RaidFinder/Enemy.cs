@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Enemy.Model
 {
@@ -40,79 +37,32 @@ namespace Enemy.Model
     class IndexFilter
     {
         //エネミーフィルタ
-        //フィルタ方法要再考
-        //できた
-        public static Enemy Filtering(Enemy e, Enemy require)
+        public static Enemy Filtering(Enemy e, Enemy require, bool param)
         {
-            int requirelevel = Convert.ToInt32(require.Level);
-            string requireenemy = require.Name_ja;
-            switch (requirelevel)
+            if(param == true)
             {
-                case 50:
-                    if (e.Level != "50" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 60:
-                    if (e.Level != "60" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 70:
-                    if (e.Level != "70" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 75:
-                    if (e.Level != "75" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 90:
-                    if (e.Level != "90" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 100:
-                    if (e.Level != "100" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 110:
-                    if (e.Level != "110" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 120:
-                    if (e.Level != "120" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 150:
-                    if (e.Level != "150" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-                case 200:
-                    if (e.Level != "200" || e.Name_ja.IndexOf(requireenemy) == -1)
-                    {
-                        Tonull(e);
-                    }
-                    break;
-
-                default:
-                    break;
+                if(e.Name_ja == require.Name_ja && e.Level == require.Level)
+                {
+                    return e;
+                }
+                else
+                {
+                    return Tonull(e);
+                }
             }
-            return e;
+            else if (param == false)
+            {
+                if(e.Name_en == require.Name_en && e.Level == require.Level)
+                {                    
+                    e.Name_ja = require.Name_ja + " (Eng)";
+                    return e;
+                }
+                else
+                {
+                    return Tonull(e);
+                }
+            }
+            return null;
         }
 
         //イベントエネミーフィルタリング
@@ -180,8 +130,27 @@ namespace Enemy.Model
 
             e.Level = enemys.Array[index].Level;
             e.Name_ja = enemys.Array[index].Name_ja;
+            e.Name_en = enemys.Array[index].Name_en;
 
             return e;
-        }        
+        }    
+        
+        //言語判定
+        public static bool CheckEnemyNameLanguage(string name, EnemyCollection enemys)
+        {
+            for (int i = 0; enemys.Array.Count() > i; i++)
+            {
+                if(enemys.Array[i].Name_ja == name)
+                {
+                    return true;
+                    
+                }
+                else if(name == enemys.Array[i].Name_en)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
