@@ -150,7 +150,7 @@ namespace Granbluefantasy_RaidFinder
                     parsecnt = ReceivedName.Count();
                     ReceivedName = ReceivedName.Remove(parsecnt - 24);
                 }
-                ReceivedEnemy.Name_en = ReceivedName;
+                ReceivedEnemy.Name_ja = ReceivedName;
             }
             else if (twitext.Contains("I need backup!") == true)
             {
