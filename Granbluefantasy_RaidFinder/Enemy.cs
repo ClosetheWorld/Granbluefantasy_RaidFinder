@@ -133,24 +133,7 @@ namespace Enemy.Model
             e.Name_en = enemys.Array[index].Name_en;
 
             return e;
-        }    
-        
-        //言語判定
-        public static bool CheckEnemyNameLanguage(string name, EnemyCollection enemys)
-        {
-            for (int i = 0; enemys.Array.Count() > i; i++)
-            {
-                if(enemys.Array[i].Name_ja == name)
-                {
-                    return true;
-                    
-                }
-                else if(name == enemys.Array[i].Name_en)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
+
     }
 }
