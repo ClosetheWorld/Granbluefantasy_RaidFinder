@@ -64,6 +64,7 @@ namespace Granbluefantasy_RaidFinder
             }
             checkedListBox1.Items.Add("Lv.50 イベントエネミー");
             checkedListBox1.Items.Add("Lv.60 イベントエネミー");
+            checkedListBox1.Items.Add("Lv.100 イベントエネミー");
             itemcount = (checkedListBox1.Items.Count);
 
             MessageBox.Show("起動処理完了", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -200,9 +201,9 @@ namespace Granbluefantasy_RaidFinder
             //チェック入りアイテムの絞り込み処理
             foreach (int indexchecked in checkedListBox1.CheckedIndices)
             {
-                if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2)
+                if (indexchecked == itemcount - 1 || indexchecked == itemcount - 2 || indexchecked == itemcount -3)
                 {
-                    var temp_e = Enemy.Model.IndexFilter.EventFiltering(ReceivedEnemy, master);
+                    var temp_e = Enemy.Model.IndexFilter.EventFiltering(ReceivedEnemy, master, indexchecked);
                     if (temp_e.Name_ja != "undefined" && temp_e.ID != "FFFFFFFF" || temp_e.Level != "999")
                     {
                         AddList(temp_e);

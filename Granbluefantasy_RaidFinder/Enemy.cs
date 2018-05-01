@@ -66,55 +66,147 @@ namespace Enemy.Model
         }
 
         //イベントエネミーフィルタリング
-        public static Enemy EventFiltering(Enemy e, EnemyCollection master)
+        public static Enemy EventFiltering(Enemy e, EnemyCollection master, int index)
         {
-            var temp = e;
-            switch (e.Level)
+            Enemy temp = new Enemy();
+
+            //EventEnemy Lv.100
+            if (index == master.Array.Count() + 2 && e.Level == "100")
             {
-                case "50":
-                    for (int i = 0; master.Array.Count() > i; i++)
+                for (int i = 0; master.Array.Count() > i; i++)
+                {
+                    if (e.Name_ja == master.Array[i].Name_ja || e.Name_en == master.Array[i].Name_en && e.Level == "100")
                     {
-                        if (e.Name_ja.StartsWith(master.Array[i].Name_ja) == false &&
-                            e.Name_ja.Contains("ティアマ") == false &&
-                            e.Name_ja.Contains("コロッサ") == false &&
-                            e.Name_ja.Contains("ユグドラ") == false &&
-                            e.Name_ja.Contains("リヴァイ") == false &&
-                            e.Name_ja.Contains("セレスト") == false &&
-                            e.Name_ja.Contains("アドウェ") == false)
+                        if (e.Name_ja != "")
                         {
-                            return e;
+                            if (e.Name_ja.StartsWith(master.Array[i].Name_ja.Substring(0, 2)) == true)
+                            {
+                                Tonull(e);
+                                Tonull(temp);
+                                break;
+                            }
                         }
-                        else
+                        else if (e.Name_en != "")
                         {
-                            e = temp;
+                            if (e.Name_en.StartsWith(master.Array[i].Name_en.Substring(0, 4)) == true)
+                            {
+                                Tonull(e);
+                                Tonull(temp);
+                                break;
+                            }
                         }
                     }
-                    break;                
-                case "60":
-                    for(int i = 0; master.Array.Count() > i; i++)
+                }
+                for (int i = 0; master.Array.Count() > i; i++)
+                {
+                    if (e.Name_ja != master.Array[i].Name_ja || e.Name_en != master.Array[i].Name_en && e.Level == "100")
                     {
-                        if(e.Name_ja.StartsWith(master.Array[i].Name_ja) == false &&
-                            e.Name_ja.Contains("リヴァイ") == false &&
-                            e.Name_ja.Contains("ユグドラ") == false)
+                        if (e.Name_ja == "")
                         {
-                            return e;
+                            e.Name_ja = e.Name_en;
+                            e.Name_ja += " (Eng)";
                         }
-                        else
+                        return e;
+                    }
+                    else
+                    {
+                        e = temp;
+                    }
+                }
+            }
+            //EventEnemy Lv.60
+            else if (index == master.Array.Count() + 1 && e.Level == "60")
+            {
+                for (int i = 0; master.Array.Count() > i; i++)
+                {
+                    if (e.Name_ja == master.Array[i].Name_ja || e.Name_en == master.Array[i].Name_en && e.Level == "60")
+                    {
+                        if (e.Name_ja != "")
                         {
-                            e = temp;
+                            if (e.Name_ja.StartsWith(master.Array[i].Name_ja.Substring(0, 2)) == true)
+                            {
+                                Tonull(e);
+                                Tonull(temp);
+                                break;
+                            }
+                        }
+                        else if (e.Name_en != "")
+                        {
+                            if (e.Name_en.StartsWith(master.Array[i].Name_en.Substring(0, 4)) == true)
+                            {
+                                Tonull(e);
+                                Tonull(temp);
+                                break;
+                            }
                         }
                     }
-                    break;
-                //イベントボスのレベル次第で追記
-                //case "":
-                default:
-                    break;
+                }
+                for (int i = 0; master.Array.Count() > i; i++)
+                {
+                    if (e.Name_ja != master.Array[i].Name_ja || e.Name_en != master.Array[i].Name_en && e.Level == "60")
+                    {
+                        if (e.Name_ja == "")
+                        {
+                            e.Name_ja = e.Name_en;
+                            e.Name_ja += " (Eng)";
+                        }
+                        return e;
+                    }
+                    else
+                    {
+                        e = temp;
+                    }
+                }
+            }
+            //EventEnemy Lv.50
+            else if (index == master.Array.Count() && e.Level == "50")
+            {
+                for (int i = 0; master.Array.Count() > i; i++)
+                {
+                    if (e.Name_ja == master.Array[i].Name_ja || e.Name_en == master.Array[i].Name_en && e.Level == "100")
+                    {
+                        if (e.Name_ja != "")
+                        {
+                            if (e.Name_ja.StartsWith(master.Array[i].Name_ja.Substring(0, 2)) == true)
+                            {
+                                Tonull(e);
+                                Tonull(temp);
+                                break;
+                            }
+                        }
+                        else if (e.Name_en != "")
+                        {
+                            if (e.Name_en.StartsWith(master.Array[i].Name_en.Substring(0, 4)) == true)
+                            {
+                                Tonull(e);
+                                Tonull(temp);
+                                break;
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; master.Array.Count() > i; i++)
+                {
+                    if (e.Name_ja != master.Array[i].Name_ja || e.Name_en != master.Array[i].Name_en && e.Level == "100")
+                    {
+                        if (e.Name_ja == "")
+                        {
+                            e.Name_ja = e.Name_en;
+                            e.Name_ja += " (Eng)";
+                        }
+                        return e;
+                    }
+                    else
+                    {
+                        e = temp;
+                    }
+                }
             }
             Tonull(e);
             return e;
         }
 
-        //ぬるぬる
+        //エネミー情報の破棄
         public static Enemy Tonull(Enemy e)
         {
             e.Name_ja = "undefined";
